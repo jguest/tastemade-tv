@@ -1,0 +1,9 @@
+{
+  "name": "tastemade.tv",
+  "description": "broadcast and watch streaming video",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "express": "3.x"
+  }
+}
