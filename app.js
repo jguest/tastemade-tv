@@ -8,6 +8,7 @@ var express = require('express'),
 
 // serve static files
 app.use(express.static(__dirname + '/public'));
+app.use(express.bodyParser());
 
 // db connection
 mongoose.connect('mongodb://localhost/tastemade-tv');
@@ -19,11 +20,11 @@ fs.readdirSync(models_dir).forEach(function(file) {
 });
 
 // data sources
-var Tastemade = require('./lib/tastemade'),
+var TastemadeWrapper = require('./lib/tastemade'),
 	Channel = mongoose.model('Channel');
 
 // routing logic with dependency injection
-var routes = require('./routes')(new Tastemade, mongoose);
+var routes = require('./routes')(new TastemadeWrapper, mongoose);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

@@ -16,7 +16,7 @@ module.exports = function(tastemade, mongoose) {
 
 		// @required username, password
 		login: function(req, res) {
-			tastemade.login(req.query.username, req.query.password,
+			tastemade.login(req.body.username, req.body.password,
 				function(json){
 					res.json(json);
 				}
