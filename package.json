@@ -1,9 +1,12 @@
 {
-  "name": "tastemade.tv",
-  "description": "broadcast and watch streaming video",
-  "version": "0.0.1",
-  "private": false,
-  "dependencies": {
-    "express": "3.x"
-  }
+	"name": "tastemade.tv",
+	"description": "broadcast and watch streaming video",
+	"version": "0.0.1",
+	"private": false,
+	"dependencies": {
+		"express": "3.x",
+		"mongoose": "3.8.x",
+		"socket.io": "1.0.x",
+		"request": "2.x"
+ 	}
 }
