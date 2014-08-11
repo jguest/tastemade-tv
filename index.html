@@ -1,14 +1,153 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+  <head>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+    <link href="css/styles.css" rel="stylesheet">
+  </head>
+  <body>
 
-  <script src="js/lib/jquery-1.10.2.js"></script>
-  <script src="js/lib/handlebars-1.1.2.js"></script>
-</body>
+    <img id="ajax-loader" src="img/ajax-loader.gif" />
+
+    <!-- shared navigation -->
+    <div id="nav"></div>
+    <script id="nav-tp" type="text/x-handlebars-template">
+      <div class="navbar navbar-inverse navbar-fixed-top main-menu">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="/#index">Tastemade.TV</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                {{#if auth}}
+                  <li><a href="/#broadcast">broadcast</a></li>
+                  <li><a href="/#logout">logout</a></li>
+                {{/if}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- alert message -->
+    <span id="alert-message"></span>
+    <script id="alert" type="text/x-handlebars-template">
+      <div class="alert alert-danger">
+        {{this}}
+      </div>
+    </script> 
+
+    <!-- not found -->
+    <script id="notFound" type="text/x-handlebars-template">
+      <div id="not-found"></pre>
+    </script>
+
+    <!-- homepage -->
+    <script id="index" type="text/x-handlebars-template">
+      <h2>What do you want to watch?</h2>
+      <ul>
+        {{#each live}}
+          <li><a href="#watch/{{_id}}">{{episode_name}}</a> - {{place}}</li>
+        {{/each}}
+        {{#each other}}
+          <li><a href="#watch/{{_id}}">{{episode_name}}</a> - {{place}}</li>
+        {{/each}}
+      </ul>
+    </script>
+
+    <!-- login -->
+    <script id="login" type="text/x-handlebars-template">
+      <h1>Welcome to Tastemade.TV</h1>
+      <p>Williamsburg Pitchfork Shoreditch scenester bitters Etsy, four loko Kickstarter crucifix gentrify roof party seitan drinking vinegar Godard. Fixie asymmetrical Thundercats, bicycle rights Neutra readymade aesthetic irony. Squid retro bitters Echo Park iPhone. Odd Future leggings letterpress Banksy artisan distillery. Literally wolf single-origin coffee, Shoreditch Thundercats keytar iPhone. Paleo post-ironic gastropub, Neutra letterpress bitters raw denim Schlitz literally Portland. Church-key lo-fi fixie Marfa, master cleanse ethical kogi scenester.</p>      
+      <div class="form-fields" name="loginSubmit">
+        <p><input name="username" type="text" class="search-query" placeholder="username"></p>
+        <p><input name="password" type="password" class="search-query" placeholder="password"></p>
+        <div class="operations">
+          <button class="btn btn-success submit-form">login</button>
+          <a href="/#signup">signup</a>
+        </div>
+      </div>
+    </script>
+
+    <!-- register new user -->
+    <script id="signup" type="text/x-handlebars-template">
+      <h2>Create a new Tastemade account</h2>
+      <div class="form-fields" name="signupSumbit">
+        <p><input name="name" type="text" class="search-query" placeholder="name"></p>
+        <p><input name="email" type="text" class="search-query" placeholder="email"></p>
+        <p><input name="username" type="text" class="search-query" placeholder="username"></p>
+        <p><input name="password" type="password" class="search-query" placeholder="password"></p>
+        <div class="operations">
+          <button class="btn btn-success submit-form">signup</button>
+          <a href="/#login">cancel</a>
+        </div>
+      </div>
+    </script>
+
+    <!-- create a new channel -->
+    <script id="broadcast" type="text/x-handlebars-template">
+      <h2>Broadcast</h2>
+      <div class="pull-left">
+        <p>Where are you?</p>
+        <ul>
+        {{#each places}}
+          <li><a id="{{this.place_id}}" class="place">{{this.name}}</a></li>
+        {{/each}}
+        </ul>
+      </div>
+      <div class="form-fields pull-right" name="broadcastSubmit">
+        <p><input id="placeid" name="placeid" type="text" class="search-query"></p>
+        <p><input id="place" name="place" type="text" class="search-query"></p>
+        <p><input name="episode_name" type="text" class="search-query" placeholder="episode name"></p>
+        <p><input name="camera1" type="text" class="search-query" placeholder="camera 1"></input></p>
+        <p><input name="camera2" type="text" class="search-query" placeholder="camera 2 (optional)"></input></p>
+        <p><input name="camera3" type="text" class="search-query" placeholder="camera 3 (optional)"></input></p>
+        <div class="operations">
+          <button class="btn btn-success submit-form">create station</button>
+          <a href="/#index">cancel</a>
+        </div>
+      </div>
+    </script>
+
+    <script id="watch" type="text/x-handlebars-template">
+      <div id="videoContainer"> 
+        <canvas id="videoCanvas" class="full">
+          <p>
+            Please use a browser that supports the Canvas Element, like
+            <a href="http://www.google.com/chrome">Chrome</a>,
+            <a href="http://www.mozilla.com/firefox/">Firefox</a>,
+            <a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
+          </p>
+        </canvas>
+        <div id="notice" style="display: block;">
+          <div class="spinner"><div class="mask"><div class="maskedCircle"></div></div></div>
+          <span id="noticeText">Lost connection</span>
+        </div>
+        <div id="recordBox">
+          <span id="stream" title="Record MPG Video" class="available">
+            <span id="recordNotice">Tastemade.tv</span>
+          </span>
+        </div>
+      </div>
+      <div class="center">
+        <span>{{place}}</place> - 
+        <span class="lobster">{{episode_name}}</span> - 
+        <span>{{username}}<span>
+      </div>
+    </script>
+    
+    <script src="js/lib/handlebars-1.1.2.js"></script>
+    <script src="js/lib/jquery-1.10.2.js"></script>
+
+    <script src="js/lib/jsmpg.js"></script>
+    <script src="js/lib/instacam.js"></script>    
+
+    <script src="js/AlertMessage.js"></script>
+    <script src="js/SharedNav.js"></script>
+    
+    <script src="js/SocketHelper.js"></script>
+    <script src="js/AppController.js"></script>
+    <script src="js/ViewHelper.js"></script>
+    <script src="js/main.js"></script>
+
+   </body>
 </html>

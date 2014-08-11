@@ -3,7 +3,7 @@ var express = require('express'),
 	http = require('http'),
 	server = http.createServer(app),
 	mongoose = require('mongoose'),
-	io = require('socket.io')(server),
+	WebSocket = require('ws');
 	fs = require('fs');
 
 // serve static files
@@ -19,9 +19,25 @@ fs.readdirSync(models_dir).forEach(function(file) {
   require(models_dir + '/' + file);
 });
 
-// data sources
-var TastemadeWrapper = require('./lib/tastemade'),
-	Channel = mongoose.model('Channel');
+var WebSocketServer = WebSocket.Server,
+	wss = new WebSocketServer({ port: 9080 });
+
+wss.broadcast = function(message) {
+	for (var i in this.clients)
+		this.clients[i].send(message);
+}
+
+wss.on('connection', function(ws) {
+	ws.on('message', function(data) {
+		wss.broadcast(data);
+	});
+	ws.on('error', function(err) {
+		console.log(err);
+	});
+});
+
+// api wrapper
+var TastemadeWrapper = require('./lib/tastemade');
 
 // routing logic with dependency injection
 var routes = require('./routes')(new TastemadeWrapper, mongoose);
@@ -32,24 +48,26 @@ db.once('open', function callback() {
 	
 	// load single page application
 	app.get('/', function(req, res) {
-	    res.sendfile('index.html', {root: __dirname });
+	    res.sendfile('index.html', { root: __dirname });
+	});
+
+	// not found
+	app.get('/not-found', function(req, res) {
+		res.sendfile('not-found.html', { root: __dirname });
 	});
 
 	// api posts
 	app.post('/register', routes.register);
 	app.post('/login', routes.login);
-	app.post('/broadcast', routes.broadcast);
-	app.post('channel', routes.new_channel);
+	app.post('/broadcast', routes.newBroadcast);
+
+	// api puts
+	app.put('/:broadcast_id/stream', routes.stream);
 
 	// api gets
-	app.get('/channel/:id', routes.channel);
-	app.get('/:city/channels', routes.channels);
-	app.get('/cities', routes.cities);
-
-	// broadcast controls socket
-	io.on('connection', function(socket) {
-		socket.emit('foo', 'bar');
-	});
+	app.get('/broadcast/:id', routes.broadcast);
+	app.get('/broadcasts', routes.broadcasts);
+	app.get('/places', routes.places);
 
 	server.listen(5000, function() {
 		console.log('listening on %d', server.address().port);

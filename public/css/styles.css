@@ -1,0 +1,219 @@
+html {
+    height: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #fff;
+  overflow: scroll;
+  overflow-x: hidden;
+  position: relative; 
+}
+
+a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.brand, .lobster, h2, h1 {
+  font-family: 'Lobster', Georgia, Times, serif;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.brand {
+  margin-left: 0px !important;
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
+  height: 25px !important;
+  font-size: 12px !important;
+}
+
+#page {
+  top: 88px;
+  position: fixed;
+  right: 20%;
+  left: 20%;
+}
+
+.operations a, .operations button {
+  margin-right: 10px;
+}
+
+#ajax-loader {
+  position: fixed;
+  z-index: 100000;
+  right: 8px;
+  top: 3px;
+  display: none;
+}
+
+#alert-message {
+  position: fixed !important;
+  top: 53px;
+  right: 20%;
+  left: 20%;
+  text-align: center;
+}
+
+.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+  width: auto;
+}
+
+#not-found {
+  position: fixed;
+  right: 0px;
+  left: 0px;
+  top: 37px;
+}
+
+#not-found pre {
+  color: blue;
+  background: none;
+  border: none;
+}
+
+.center {
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* styles from instant webcam */
+
+#videoContainer a {
+  color: #FF8534;
+  text-decoration: none;
+}
+
+#videoContainer a:hover {
+  color: #fff;
+}
+
+div#videoContainer {
+  overflow: hidden;
+  /*position: fixed;*/
+  text-align: center;
+  box-shadow: 8px 8px 8px 0px rgba(33,31,33,0.6);
+  -webkit-box-shadow: 8px 8px 8px 0px rgba(33,31,33,0.6);
+  -moz-box-shadow: 8px 8px 8px 0px rgba(33,31,33,0.6);
+}
+
+canvas#videoCanvas  {
+  background-color: #000;
+  max-width: 100%;
+  display: block;
+}
+
+div#videoOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+div#copy {
+  text-shadow: 0px 0px 2px #000;
+  font-size: 10px;
+  position: absolute;
+  bottom: 16px;
+  right: 14px
+}
+
+div#copy img {
+  width: 20px;
+  height: 20px;
+  border: 0;
+}
+
+div#notice {
+  width: 100%;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+div#recordBox {
+  font-size: 12px;
+  position: absolute;
+  left: 12px;
+  top: 0px;
+}
+
+span#recordDot {
+  font-size: 32px;
+}
+
+span#recordNotice {
+  text-transform: uppercase;
+  vertical-align: bottom;
+  line-height: 32px;
+}
+
+span#recordStats {
+  display: none;
+  margin-left: 0.5em;
+  font-size: 10px;
+  vertical-align: bottom;
+  line-height: 32px;
+}
+
+span#recordLinkBox {
+  color: #fff;
+  display: none;
+  font-size: 12px;
+  vertical-align: bottom;
+  line-height: 32px;
+}
+
+a#recordLink {
+  vertical-align: bottom;
+  line-height: 32px;
+}
+
+span#recordDisabled {
+  display: none;
+  vertical-align: bottom;
+  line-height: 32px;
+  color: #FF8534; 
+}
+
+span#stream.available { color: rgba(255, 255, 255, 0.5); }
+span#stream.recording  { color: #ff3e2b; }
+
+span#record.waiting { color: rgba(128, 128, 128, 0.3); }
+span#record.unavailable { display: none; }
+span#record:hover, span#record.recording:hover, span#record.available:hover { color: #fff; }
+
+
+/* Spinner Animation
+-------------------------------------------------*/
+@-webkit-keyframes spin { from { -webkit-transform: rotate(0deg); } to { -webkit-transform: rotate(360deg); } }
+@-moz-keyframes spin { from { -moz-transform: rotate(0deg); } to { -moz-transform: rotate(360deg); } }
+@keyframes spin { from { tra  nsform: rotate(0deg); } to { transform: rotate(360deg); } }
+.spinner .maskedCircle { width: 10px; height: 10px; border-radius: 9px; border: 2px solid white; }
+.spinner .mask { width:8px; height: 8px; overflow: hidden; }
+.spinner {
+  display: inline-block;
+  margin: 0 8px -2px 8px;
+  width: 18px; height: 18px;
+  -webkit-animation: spin 1s infinite linear;
+  -moz-animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear;
+}
